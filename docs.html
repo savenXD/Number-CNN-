@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentation — MNIST CNN Classifier</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-grid-pattern min-h-screen text-neutral-900 selection:bg-black selection:text-white px-4 py-8 sm:py-12">
+
+  <div class="w-full max-w-2xl mx-auto flex flex-col gap-8">
+
+    <!-- Top Navigation / Back Button -->
+    <div class="flex items-center justify-between border-b border-neutral-200 pb-4">
+      <a href="index.html" class="inline-flex items-center gap-2 text-xs font-mono text-neutral-600 hover:text-black transition-colors bg-white px-3 py-1.5 rounded-lg border border-neutral-200 shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+        </svg>
+        <span>Back to Predictor</span>
+      </a>
+
+      <span class="text-xs font-mono text-neutral-400">MNIST CNN v1.0</span>
+    </div>
+
+    <!-- Main Title Header -->
+    <header class="flex flex-col gap-2">
+      <div class="inline-flex items-center gap-2 w-fit px-2.5 py-1 rounded-full bg-neutral-100 border border-neutral-200 text-[11px] font-mono tracking-widest text-neutral-600">
+        <span class="w-1.5 h-1.5 rounded-full bg-black"></span>
+        <span>MODEL SPECIFICATIONS & ARCHITECTURE</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold font-mono text-black">
+        MNIST CNN Classifier
+      </h1>
+      <p class="text-sm font-mono text-neutral-500">
+        Deep Convolutional Neural Network trained on handwritten digits (0–9) achieving 99.21% test accuracy.
+      </p>
+    </header>
+
+    <!-- Content Sections Card -->
+    <main class="flex flex-col gap-6 font-mono text-xs text-neutral-800">
+
+      <!-- Section 1: Overview & Metrics -->
+      <section class="bg-white border border-neutral-300 rounded-2xl p-6 shadow-sm flex flex-col gap-4">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-black border-b border-neutral-200 pb-2">
+          1. Model Summary & Metrics
+        </h2>
+        
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="bg-neutral-50 p-3 rounded-xl border border-neutral-200">
+            <span class="text-[10px] text-neutral-400 block">DATASET</span>
+            <span class="text-sm font-bold text-black">MNIST</span>
+          </div>
+          <div class="bg-neutral-50 p-3 rounded-xl border border-neutral-200">
+            <span class="text-[10px] text-neutral-400 block">TEST ACCURACY</span>
+            <span class="text-sm font-bold text-black">99.21%</span>
+          </div>
+          <div class="bg-neutral-50 p-3 rounded-xl border border-neutral-200">
+            <span class="text-[10px] text-neutral-400 block">TRAIN IMAGES</span>
+            <span class="text-sm font-bold text-black">60,000</span>
+          </div>
+          <div class="bg-neutral-50 p-3 rounded-xl border border-neutral-200">
+            <span class="text-[10px] text-neutral-400 block">INPUT SHAPE</span>
+            <span class="text-sm font-bold text-black">28 × 28 × 1</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Neural Network Architecture -->
+      <section class="bg-white border border-neutral-300 rounded-2xl p-6 shadow-sm flex flex-col gap-4">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-black border-b border-neutral-200 pb-2">
+          2. CNN Layer Architecture
+        </h2>
+
+        <div class="flex flex-col gap-2">
+          <div class="flex items-center justify-between p-2.5 bg-neutral-900 text-white rounded-xl">
+            <span>Input Layer</span>
+            <span class="text-[11px] text-neutral-400">28 × 28 Grayscale Image</span>
+          </div>
+          <div class="flex items-center justify-between p-2.5 bg-neutral-100 border border-neutral-200 rounded-xl">
+            <span>Conv2D Layer 1</span>
+            <span class="text-[11px] text-neutral-600">32 filters, 3×3 kernel, ReLU</span>
+          </div>
+          <div class="flex items-center justify-between p-2.5 bg-neutral-100 border border-neutral-200 rounded-xl">
+            <span>MaxPooling2D Layer 1</span>
+            <span class="text-[11px] text-neutral-600">2×2 pool size</span>
+          </div>
+          <div class="flex items-center justify-between p-2.5 bg-neutral-100 border border-neutral-200 rounded-xl">
+            <span>Conv2D Layer 2</span>
+            <span class="text-[11px] text-neutral-600">64 filters, 3×3 kernel, ReLU</span>
+          </div>
+          <div class="flex items-center justify-between p-2.5 bg-neutral-100 border border-neutral-200 rounded-xl">
+            <span>MaxPooling2D Layer 2</span>
+            <span class="text-[11px] text-neutral-600">2×2 pool size</span>
+          </div>
+          <div class="flex items-center justify-between p-2.5 bg-neutral-100 border border-neutral-200 rounded-xl">
+            <span>Flatten</span>
+            <span class="text-[11px] text-neutral-600">Reshape 2D feature maps to 1D vector</span>
+          </div>
+          <div class="flex items-center justify-between p-2.5 bg-neutral-100 border border-neutral-200 rounded-xl">
+            <span>Dense Layer</span>
+            <span class="text-[11px] text-neutral-600">128 units, ReLU activation</span>
+          </div>
+          <div class="flex items-center justify-between p-2.5 bg-neutral-100 border border-neutral-200 rounded-xl">
+            <span>Dropout Layer</span>
+            <span class="text-[11px] text-neutral-600">Rate: 0.3 (Regularization)</span>
+          </div>
+          <div class="flex items-center justify-between p-2.5 bg-black text-white rounded-xl">
+            <span>Output Dense Layer</span>
+            <span class="text-[11px] text-neutral-300">10 units, Softmax activation (Digits 0–9)</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Preprocessing Pipeline -->
+      <section class="bg-white border border-neutral-300 rounded-2xl p-6 shadow-sm flex flex-col gap-4">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-black border-b border-neutral-200 pb-2">
+          3. Preprocessing Pipeline
+        </h2>
+
+        <ol class="list-decimal list-inside flex flex-col gap-2 leading-relaxed text-neutral-700">
+          <li><strong>Base64 Decoding:</strong> Canvas PNG drawing received via API payload.</li>
+          <li><strong>Grayscale & Color Inversion:</strong> White canvas (255) converted to white digit on black background (MNIST convention).</li>
+          <li><strong>Bounding Box Crop:</strong> Extracts non-zero stroke pixels without cropping out digit edges.</li>
+          <li><strong>Aspect Ratio Preserved Resizing:</strong> Resizes stroke inside a 20×20 bounding box preserving proportions.</li>
+          <li><strong>Centered 28×28 Frame:</strong> Pads outer margins to produce centered 28×28 matrix.</li>
+          <li><strong>Normalization & Reshaping:</strong> Scales pixels to [0.0, 1.0] and reshapes to batch shape (1, 28, 28, 1).</li>
+        </ol>
+      </section>
+
+      <!-- Section 4: API Endpoint Reference -->
+      <section class="bg-white border border-neutral-300 rounded-2xl p-6 shadow-sm flex flex-col gap-4">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-black border-b border-neutral-200 pb-2">
+          4. FastAPI Endpoint Reference
+        </h2>
+
+        <div class="flex flex-col gap-3">
+          <div class="bg-neutral-50 p-3 rounded-xl border border-neutral-200">
+            <span class="font-bold text-black">POST /predict</span>
+            <p class="text-[11px] text-neutral-500 mt-1">Accepts JSON <code>{"image": "data:image/png;base64,..."}</code> and returns predicted digit + raw Softmax float output for digits 0–9.</p>
+          </div>
+          <div class="bg-neutral-50 p-3 rounded-xl border border-neutral-200">
+            <span class="font-bold text-black">GET /health</span>
+            <p class="text-[11px] text-neutral-500 mt-1">Returns server operational status and model file readiness.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center text-[10px] font-mono text-neutral-400 pb-8">
+      MNIST CNN Classifier Documentation &bull; TensorFlow / Keras &bull; FastAPI
+    </footer>
+
+  </div>
+
+</body>
+</html>

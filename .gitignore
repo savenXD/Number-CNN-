@@ -1,0 +1,13 @@
+# Environment & Cache
+__pycache__/
+*.pyc
+venv/
+.venv/
+.ds_store
+
+# Node
+node_modules/
+npm-debug.log
+
+# DO NOT ignore .keras model file so Render can load it during deployment
+!backend/model/mnist_cnn_best.keras

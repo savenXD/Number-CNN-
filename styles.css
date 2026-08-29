@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Caveat:wght@400;500;600;700&display=swap');
+
+:root {
+  --font-mono: 'Space Grotesk', monospace, sans-serif;
+  --font-hand: 'Caveat', cursive, sans-serif;
+}
+
+body {
+  font-family: var(--font-mono);
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.font-handwritten {
+  font-family: var(--font-hand);
+}
+
+/* Subtle Low-Density Visible Grid Background */
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: center center;
+}
+
+/* Canvas styling */
+#digitCanvas {
+  touch-action: none;
+  cursor: crosshair;
+}
+
+/* Pop animation for prediction digit */
+@keyframes popDigit {
+  0% { transform: scale(0.85); opacity: 0.5; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-pop-digit {
+  animation: popDigit 0.35s ease-out forwards;
+}
+
+/* Minimal scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
