@@ -1,11 +1,7 @@
-# Render Deployment Configuration Blueprint
 services:
   - type: web
     name: mnist-cnn-backend
-    env: python
+    env: docker
     region: oregon
-    buildCommand: pip install -r backend/requirements.txt
-    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.0
+    dockerfilePath: Dockerfile
+    dockerContext: .
