@@ -1,0 +1,6 @@
+# Ignore Python backend files on Vercel so Vercel only deploys the static frontend
+backend/
+Dockerfile
+render.yaml
+venv/
+.venv/

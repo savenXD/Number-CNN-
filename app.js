@@ -4,10 +4,9 @@
 
 // =========================================================================
 // DEPLOYMENT CONFIGURATION:
-// Paste your live Render backend URL here after deploying on Render!
-// Example: const RENDER_BACKEND_URL = 'https://mnist-cnn-backend.onrender.com';
+// Live Render backend service URL
 // =========================================================================
-const RENDER_BACKEND_URL = ''; 
+const RENDER_BACKEND_URL = 'https://number-cnn.onrender.com'; 
 
 document.addEventListener('DOMContentLoaded', () => {
   const BACKEND_URL = RENDER_BACKEND_URL || (
@@ -229,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3. Prediction Engine (Strict Real Model Calls - No Dummy Simulations)
+  // 3. Prediction Engine (Live Render API)
   let isPredicting = false;
 
   async function predictDigit() {
@@ -276,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
       digitTicker.textContent = data.digit;
       digitTicker.classList.add('animate-pop-digit');
       topScoreText.textContent = data.confidence.toFixed(6);
-      backendStatusBadge.textContent = 'FastAPI Model Active';
+      backendStatusBadge.textContent = 'Render API Active';
 
       renderRawProbabilityList(data.probabilities, data.digit, false);
       hasPredicted = true;
@@ -285,10 +284,9 @@ document.addEventListener('DOMContentLoaded', () => {
       clearInterval(tickerInterval);
       console.error('API Error:', err);
 
-      // Display explicit error when API / Model is unavailable
       digitTicker.textContent = 'ERR';
       topScoreText.textContent = '0.000000';
-      backendStatusBadge.textContent = 'API Error / Offline';
+      backendStatusBadge.textContent = 'Render API Error';
       
       resetToInitialState();
       alert(`API Error: ${err.message || 'Unable to connect to model server.'}`);
@@ -347,18 +345,18 @@ document.addEventListener('DOMContentLoaded', () => {
   initCanvas();
   resetToInitialState();
 
-  // Check Backend Health
+  // Check Live Render Backend Health
   fetch(`${BACKEND_URL}/health`)
     .then(res => res.json())
     .then(data => {
       if (data.model_loaded) {
-        backendStatusBadge.textContent = 'FastAPI Model Ready';
+        backendStatusBadge.textContent = 'Render API Live';
       } else {
-        backendStatusBadge.textContent = 'Model File Missing';
+        backendStatusBadge.textContent = 'Render API Active (No Model File)';
       }
     })
     .catch(() => {
-      backendStatusBadge.textContent = 'Backend Offline';
+      backendStatusBadge.textContent = 'Render API Waking Up...';
     });
 
   // Fade out loader
