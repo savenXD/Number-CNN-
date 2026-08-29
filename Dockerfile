@@ -8,12 +8,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt-get/lists/*
 
-# Copy requirements and install python packages
+# Copy requirements and install python packages first (for build caching)
 COPY backend/requirements.txt ./backend/requirements.txt
 RUN pip install --no-cache-dir -r backend/requirements.txt
 
-# Copy backend application and model
-COPY backend/ ./backend/
+# Copy ALL project files (index.html, styles.css, app.js, docs.html, backend/) into /app
+COPY . .
 
 # Expose port
 EXPOSE 8000
