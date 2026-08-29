@@ -50,13 +50,20 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Enable CORS for local and production deployment
+# Robust CORS Configuration for Vercel, Localhost, and All Origins
+# Note: allow_credentials must be False when allow_origins=["*"] is enabled to adhere to browser CORS standards.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
+    allow_origins=[
+        "https://number-cnn.vercel.app",
+        "http://localhost:8080",
+        "http://127.0.0.1:8080",
+        "*"
+    ],
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
+    expose_headers=["*"]
 )
 
 # Pydantic schemas
