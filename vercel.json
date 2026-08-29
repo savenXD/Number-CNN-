@@ -1,9 +1,7 @@
 {
   "version": 2,
-  "framework": null,
   "cleanUrls": true,
-  "routes": [
-    { "src": "/docs", "dest": "/docs.html" },
-    { "src": "/(.*)", "dest": "/$1" }
+  "rewrites": [
+    { "source": "/docs", "destination": "/docs.html" }
   ]
 }

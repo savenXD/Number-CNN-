@@ -68,6 +68,18 @@ class PredictResponse(BaseModel):
     confidence: float
     probabilities: dict[str, float]
 
+@app.get("/")
+def root():
+    """
+    Root API endpoint welcome message.
+    """
+    return {
+        "message": "MNIST CNN Classifier Backend API is running!",
+        "health": "/health",
+        "docs": "/docs",
+        "model_loaded": keras_model is not None
+    }
+
 @app.get("/health")
 def health_check():
     """
