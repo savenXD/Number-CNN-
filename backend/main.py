@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
@@ -11,13 +12,23 @@ import numpy as np
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("mnist_backend")
 
+# Add current backend folder to sys.path so preprocess module is always importable
+BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
+if BACKEND_DIR not in sys.path:
+    sys.path.append(BACKEND_DIR)
+
+try:
+    from preprocess import preprocess_canvas_image
+except ImportError:
+    from backend.preprocess import preprocess_canvas_image
+
 # Global model state
 keras_model = None
 MODEL_RELATIVE_PATH = os.path.join("model", "mnist_cnn_best.keras")
-MODEL_FULL_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), MODEL_RELATIVE_PATH))
+MODEL_FULL_PATH = os.path.abspath(os.path.join(BACKEND_DIR, MODEL_RELATIVE_PATH))
 
 # Root project directory path
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+BASE_DIR = os.path.abspath(os.path.join(BACKEND_DIR, ".."))
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -150,8 +161,6 @@ def predict_digit(payload: PredictRequest):
 
     if not payload.image or len(payload.image.strip()) == 0:
         raise HTTPException(status_code=400, detail="No image data provided.")
-
-    from preprocess import preprocess_canvas_image
 
     try:
         input_tensor = preprocess_canvas_image(payload.image)
