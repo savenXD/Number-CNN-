@@ -3,17 +3,13 @@
  */
 
 // =========================================================================
-// DEPLOYMENT CONFIGURATION:
-// Live Render backend service URL
+// BACKEND URL CONFIGURATION:
+// Automatically uses current origin (Render or Localhost)
 // =========================================================================
-const RENDER_BACKEND_URL = 'https://number-cnn.onrender.com'; 
+const RENDER_BACKEND_URL = ''; 
 
 document.addEventListener('DOMContentLoaded', () => {
-  const BACKEND_URL = RENDER_BACKEND_URL || (
-    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-      ? 'http://localhost:8000'
-      : 'http://localhost:8000'
-  );
+  const BACKEND_URL = RENDER_BACKEND_URL || window.location.origin;
   
   // DOM Elements
   const canvas = document.getElementById('digitCanvas');
@@ -228,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3. Prediction Engine (Live Render API)
+  // 3. Prediction Engine (Direct relative API calls)
   let isPredicting = false;
 
   async function predictDigit() {
@@ -275,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
       digitTicker.textContent = data.digit;
       digitTicker.classList.add('animate-pop-digit');
       topScoreText.textContent = data.confidence.toFixed(6);
-      backendStatusBadge.textContent = 'Render API Active';
+      backendStatusBadge.textContent = 'Render Model Active';
 
       renderRawProbabilityList(data.probabilities, data.digit, false);
       hasPredicted = true;

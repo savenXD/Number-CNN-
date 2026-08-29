@@ -3,6 +3,7 @@ import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 import numpy as np
 
@@ -14,6 +15,9 @@ logger = logging.getLogger("mnist_backend")
 keras_model = None
 MODEL_RELATIVE_PATH = os.path.join("model", "mnist_cnn_best.keras")
 MODEL_FULL_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), MODEL_RELATIVE_PATH))
+
+# Root project directory path
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -50,18 +54,12 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Robust CORS Configuration for Vercel, Localhost, and All Origins
-# Note: allow_credentials must be False when allow_origins=["*"] is enabled to adhere to browser CORS standards.
+# Enable CORS for all origins and hosts
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://number-cnn.vercel.app",
-        "http://localhost:8080",
-        "http://127.0.0.1:8080",
-        "*"
-    ],
+    allow_origins=["*"],
     allow_credentials=False,
-    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_methods=["*"],
     allow_headers=["*"],
     expose_headers=["*"]
 )
@@ -75,17 +73,52 @@ class PredictResponse(BaseModel):
     confidence: float
     probabilities: dict[str, float]
 
+# =========================================================================
+# FRONTEND SERVING ROUTES (Serves entire website directly on Render)
+# =========================================================================
+
 @app.get("/")
-def root():
+def serve_index():
     """
-    Root API endpoint welcome message.
+    Serve main single-page web app (index.html).
     """
+    index_path = os.path.join(BASE_DIR, "index.html")
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
     return {
-        "message": "MNIST CNN Classifier Backend API is running!",
+        "message": "MNIST CNN Classifier API is running!",
         "health": "/health",
-        "docs": "/docs",
+        "docs_page": "/docs_page",
         "model_loaded": keras_model is not None
     }
+
+@app.get("/docs_page")
+def serve_docs_page():
+    """
+    Serve model documentation page (docs.html).
+    """
+    docs_path = os.path.join(BASE_DIR, "docs.html")
+    if os.path.exists(docs_path):
+        return FileResponse(docs_path)
+    return {"message": "Documentation page not found"}
+
+@app.get("/styles.css")
+def serve_styles():
+    styles_path = os.path.join(BASE_DIR, "styles.css")
+    if os.path.exists(styles_path):
+        return FileResponse(styles_path, media_type="text/css")
+    raise HTTPException(status_code=404, detail="styles.css not found")
+
+@app.get("/app.js")
+def serve_app_js():
+    app_js_path = os.path.join(BASE_DIR, "app.js")
+    if os.path.exists(app_js_path):
+        return FileResponse(app_js_path, media_type="application/javascript")
+    raise HTTPException(status_code=404, detail="app.js not found")
+
+# =========================================================================
+# BACKEND ML & HEALTH ENDPOINTS
+# =========================================================================
 
 @app.get("/health")
 def health_check():
